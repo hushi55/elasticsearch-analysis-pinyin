@@ -35,20 +35,31 @@ task classesJar(type:Jar, dependsOn:compileJava){
 }
 
 task build2zip(type: Zip, dependsOn:classesJar) {
-    //archiveName = "${projectName}.zip"
-    //destinationDir = file("${build_output}/${branch}/zip")
-    //from("${src}/deploy") {
-    //    into ('bin')
-    //}
-    //from("${src}/config") {
-    //    into ('config')
-    //}
-    //from("${src}/lib") {
-    //    into ('lib')
-    //}
-    //from("${src}/resource") {
-    //    into ('resource')
-    //}
-    //from classesJar.archivePath
-    //rename (/${packageName}(.*)\.jar/, "${projectName}.jar")
+    archiveName = "elasticsearch-analysis-pinyin.zip"
+    destinationDir = file("./zip")
+    
+    delete fileTree(destinationDir)
+    delete fileTree("./plugin")
+    
+   project.copy {
+      from configurations.compile
+      into "./plugin"
+      
+      include 		'elasticsearch-analysis-pinyin*.jar'
+	  include		'pinyin4j-*.jar'
+	  include		'ik*.jar'
+	  include		'lucene-analyzers-icu*.jar'
+   }
+   
+   project.copy {
+      from "./jar"
+      into "./plugin"
+   }
+   												
+   project.copy {
+      from "/src/main/resources/plugin-descriptor.properties"
+      into "./plugin"
+   }
+   
+   from "./plugin"
 }

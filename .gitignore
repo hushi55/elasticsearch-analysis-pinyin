@@ -13,3 +13,6 @@
 /bin/
 /build/
 /test-output/
+/jar/
+/zip/
+/plugin/

@@ -30,12 +30,24 @@ public class PinyinAnalysisBinderProcessor extends AnalysisModule.AnalysisBinder
 
     @Override
     public void processTokenizers(TokenizersBindings tokenizersBindings) {
+        tokenizersBindings.processTokenizer("ik", IKTokenizerFactory.class);
         tokenizersBindings.processTokenizer("pinyin", PinyinTokenizerFactory.class);
         tokenizersBindings.processTokenizer("pinyin_first_letter", PinyinAbbreviationsTokenizerFactory.class);
     }
 
     @Override
-    public void processTokenFilters(TokenFiltersBindings tokenFiltersBindings) {
-        tokenFiltersBindings.processTokenFilter("pinyin", PinyinTokenFilterFactory.class);
+    public void processTokenFilters(TokenFiltersBindings binding) {
+        binding.processTokenFilter("pinyin", PinyinTokenFilterFactory.class);
+
+        binding.processTokenFilter("script", 					ScriptTokenFilterFactory.class);
+        binding.processTokenFilter("full_spelling_icu", 		FullSpellingICUTransformFilterFactory.class);
+        binding.processTokenFilter("full_spelling_token", 		FullSpellingTokenFilterFactory.class);
+        binding.processTokenFilter("mixed_spelling_icu", 		MixedSpellingICUTransformFilterFactory.class);
+        binding.processTokenFilter("mutiple_icu", 				MultipleICUTransformFilterFactory.class);
+        binding.processTokenFilter("mutiple_spelling_icu", 		MultipleSpellingICUTransformFilterFactory.class);
+        binding.processTokenFilter("mutiple_spelling_token",	MultipleSpellingTokenFilterFactory.class);
+        binding.processTokenFilter("mobile_keyboard_number",	MobileKeyboardNumberSpellingTokenFilterFactory.class);
+
+
     }
 }

@@ -32,13 +32,14 @@
     </parent>
 
     <properties>
-        <elasticsearch.version>2.1.0</elasticsearch.version>
+        <elasticsearch.version>2.1.1</elasticsearch.version>
         <maven.compiler.target>1.7</maven.compiler.target>
+        <elasticsearch.plugin.name>elasticsearch-analysis-pinyin</elasticsearch.plugin.name>
         <elasticsearch.assembly.descriptor>${project.basedir}/src/main/assemblies/plugin.xml</elasticsearch.assembly.descriptor>
         <elasticsearch.plugin.classname>org.elasticsearch.plugin.analysis.pinyin.AnalysisPinyinPlugin</elasticsearch.plugin.classname>
         <elasticsearch.plugin.jvm>true</elasticsearch.plugin.jvm>
-        <tests.rest.load_packaged>false</tests.rest.load_packaged>
-        <skip.unit.tests>true</skip.unit.tests>
+        <tests.rest.load_packaged>false</tests.rest.load_packaged>  
+        <maven.test.skip>true</maven.test.skip>
     </properties>
 
     <repositories>
@@ -56,6 +57,20 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-icu</artifactId>
+            <version>5.4.0</version>
+            <systemPath>${basedir}/lib/lucene-analyzers-icu-5.4.0.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>icu4j-54.1</artifactId>
+            <version>5.4.0</version>
+            <systemPath>${basedir}/lib/icu4j-54.1.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
         <dependency>
             <groupId>net.sourceforge.pinyin4j</groupId>
             <artifactId>pinyin4j</artifactId>
@@ -107,6 +122,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
+                    <skipTests>true</skipTests>
                     <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
@@ -116,15 +132,16 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.11</version>
                 <configuration>
-                    <includes>
-                        <include>**/*Tests.java</include>
-                    </includes>
+                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <version>2.1.2</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -138,6 +155,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.3</version>
                 <configuration>
+                	<skipTests>true</skipTests>
                     <appendAssemblyId>false</appendAssemblyId>
                     <outputDirectory>${project.build.directory}/releases/</outputDirectory>
                     <descriptors>
